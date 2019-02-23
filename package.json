@@ -1,0 +1,28 @@
+{
+  "name": "hackillinois-back-end",
+  "version": "1.0.0",
+  "description": "Backend for HackIllinois Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teddychen1251/HackIllinois-Back-End.git"
+  },
+  "keywords": [
+    "Node.js",
+    "Javascript"
+  ],
+  "author": "Teddy Chen, Albert Kong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teddychen1251/HackIllinois-Back-End/issues"
+  },
+  "homepage": "https://github.com/teddychen1251/HackIllinois-Back-End#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "request": "^2.88.0"
+  }
+}
