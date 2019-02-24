@@ -6,8 +6,8 @@ const request = require('request')
 const Amadeus = require('amadeus')
 const CheckbookAPI = require('checkbook-api');
 
-app.use(cors())
-
+app.use(cors());
+app.options('*', cors()) ;
 let Checkbook = new CheckbookAPI({
   api_key: '0eb0c22842a0fcccef4b9d329d9c5d04',
   api_secret: '88b84e581bf2ab14551d1a5702df01dd',
