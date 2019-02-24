@@ -102,7 +102,7 @@ app.get('/inspiration', (req, res) => {
         
         let trips = JSON.parse(body)
         for (trip in trips["data"]) {
-          trips["data"][trip]["destination"] = 
+          trips["data"][trip]["destination"] += " - " +
             trips.dictionaries.locations[trips["data"][trip]["destination"]].detailedName;
         }
         res.json(trips)
@@ -394,6 +394,52 @@ app.get('/lowfare', (req, res) => {
       });
     });
   });
+})
+
+app.get('/hotels', (req, res) => {
+
+  var apiToken = {
+    method: 'POST',
+    url: 'https://test.api.amadeus.com/v1/security/oauth2/token',
+    headers: {
+      'Postman-Token': '66a369bc-da1c-4f68-a453-91b36f45d822',
+      'cache-control': 'no-cache'
+    },
+    form: {
+      client_id: 'OCyWXGtFjvCyKcGzCDgO4As9ArPK0zfT',
+      client_secret: 'ly93zeHErfkWyjLe',
+      grant_type: 'client_credentials'
+    }
+  };
+  
+  request(apiToken, function(error, response, body) {
+    if (error) res.error(error);
+
+    token = JSON.parse(body);
+    token = token.token_type + " " + token.access_token;
+
+    var hotels = { 
+      method: 'GET',
+      url: 'https://test.api.amadeus.com/v2/shopping/hotel-offers',
+      qs: { 
+        cityCode: req.query.cityCode, 
+        sort: 'PRICE' 
+      },
+      headers: { 
+        'Postman-Token': '47b1a17d-f461-4f64-8206-a0ca97dc4c11',
+        'cache-control': 'no-cache',
+        Authorization: token 
+      } 
+    };
+
+    request(hotels, function (error, response, body) {
+      if (error) res.error(error);
+
+      res.json(JSON.parse(body))
+    });
+
+  })
+
 })
 
 app.get('/pay', (req, res) => {
