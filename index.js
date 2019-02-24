@@ -61,12 +61,14 @@ app.get('/inspiration', (req, res) => {
     token = JSON.parse(body);
     token = token.token_type + " " + token.access_token;
 
+    let city = req.query.city;
+
     var citiesToCodes = {
       method: 'GET',
       url: 'https://test.api.amadeus.com/v1/reference-data/locations',
       qs: {
         subType: 'CITY',
-        keyword: req.query.city
+        keyword: city
       },
       headers: {
         'Postman-Token': '00f8030d-fda7-45c4-9723-6f7a9114c2ca',
@@ -97,7 +99,13 @@ app.get('/inspiration', (req, res) => {
       };
       request(flightOptions, function (error, response, body) {
         if (error) res.error(error);
-        res.json(JSON.parse(body));
+        
+        let trips = JSON.parse(body)
+        for (trip in trips["data"]) {
+          trips["data"][trip]["destination"] = 
+            trips.dictionaries.locations[trips["data"][trip]["destination"]].detailedName;
+        }
+        res.json(trips)
       });
     });
   });
@@ -389,18 +397,49 @@ app.get('/lowfare', (req, res) => {
 })
 
 app.get('/pay', (req, res) => {
-  Checkbook.checks.sendDigitalCheck({
-    name: req.query.name,
-    recipient: req.query.recipient,
-    description: req.query.description,
-    amount: parseFloat(req.query.amount)
-  }, function (error, response) {
-    if (error) {
-        console.log('Error:', error);
-    } else {
-        res.send(response)
-    }
+
+  let customerID = "5c724e466759394351bee384" || req.query.customerID
+
+  var getPayment = { 
+    method: 'POST',
+    url: 'http://api.reimaginebanking.com/accounts/' + customerID + '/purchases',
+    qs: { key: '0acb93d46d26f475a65adc184135afbb' },
+    headers: { 
+      'Postman-Token': 'c7667424-d0dc-4e72-99c4-af21867c1006',
+      'cache-control': 'no-cache',
+      Authorization: 'Bearer 0acb93d46d26f475a65adc184135afbb',
+      'Content-Type': 'application/json',
+      Accept: 'application/json' 
+    },
+    body: { 
+      merchant_id: '5c7251936759394351bee394',
+      medium: 'balance',
+      purchase_date: '2019-02-24',
+      amount: parseFloat(req.query.amount),
+      status: 'pending',
+      description: 'string' 
+    },
+    json: true 
+  };
+
+  request(getPayment, function (error, response, body) {
+    if (error) res.error(error)
+
+    console.log(response)
+    Checkbook.checks.sendDigitalCheck({
+      name: req.query.name,
+      recipient: req.query.recipient,
+      description: req.query.description,
+      amount: parseFloat(req.query.amount)
+    }, function (error, response) {
+      if (error) {
+          console.log('Error:', error);
+      } else {
+          res.send(response)
+      }
+    });
   });
+
 })
 
 
