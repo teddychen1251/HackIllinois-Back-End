@@ -4,6 +4,12 @@ const app = express()
 const port = process.env.PORT || 3000
 const request = require('request')
 const Amadeus = require('amadeus')
+const CheckbookAPI = require('checkbook-api');
+let Checkbook = new CheckbookAPI({
+  api_key: '0eb0c22842a0fcccef4b9d329d9c5d04',
+  api_secret: '88b84e581bf2ab14551d1a5702df01dd',
+  env: 'sandbox'
+});
 
 let token = ""
 
@@ -381,6 +387,22 @@ app.get('/lowfare', (req, res) => {
     });
   });
 })
+
+app.get('/pay', (req, res) => {
+  Checkbook.checks.sendDigitalCheck({
+    name: req.query.name,
+    recipient: req.query.recipient,
+    description: req.query.description,
+    amount: parseFloat(req.query.amount)
+  }, function (error, response) {
+    if (error) {
+        console.log('Error:', error);
+    } else {
+        res.send(response)
+    }
+  });
+})
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}!`)

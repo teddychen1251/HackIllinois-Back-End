@@ -23,6 +23,7 @@
   "homepage": "https://github.com/teddychen1251/HackIllinois-Back-End#readme",
   "dependencies": {
     "amadeus": "^3.0.0",
+    "checkbook-api": "^3.0.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "request": "^2.88.0"
