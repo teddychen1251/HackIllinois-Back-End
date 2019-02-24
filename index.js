@@ -5,9 +5,30 @@ const port = process.env.PORT || 3000
 const request = require('request')
 const Amadeus = require('amadeus')
 const CheckbookAPI = require('checkbook-api');
-
+// app.use(function(req, res, next) {
+//   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+//   // res.send(req.body)
+//    next();
+// });
 app.use(cors());
-app.options('*', cors()) ;
+
+// app.options('*', cors());
+
+// app.use(function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+//   //intercepts OPTIONS method
+//   // if ('OPTIONS' === req.method) {
+//     //respond with 200
+//     res.send(200);
+//   // }
+//   // else {
+//   //move on
+//     next();
+//   // }
+// });
 let Checkbook = new CheckbookAPI({
   api_key: '0eb0c22842a0fcccef4b9d329d9c5d04',
   api_secret: '88b84e581bf2ab14551d1a5702df01dd',
