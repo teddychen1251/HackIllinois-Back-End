@@ -423,7 +423,8 @@ app.get('/hotels', (req, res) => {
       url: 'https://test.api.amadeus.com/v2/shopping/hotel-offers',
       qs: { 
         cityCode: req.query.cityCode, 
-        sort: 'PRICE' 
+        sort: 'PRICE',
+        currency: 'USD'
       },
       headers: { 
         'Postman-Token': '47b1a17d-f461-4f64-8206-a0ca97dc4c11',
