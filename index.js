@@ -102,7 +102,7 @@ app.get('/inspiration', (req, res) => {
         
         let trips = JSON.parse(body)
         for (trip in trips["data"]) {
-          trips["data"][trip]["destination"] += " - " +
+          trips["data"][trip]["destination"] += " - " + //edit
             trips.dictionaries.locations[trips["data"][trip]["destination"]].detailedName;
         }
         res.json(trips)
