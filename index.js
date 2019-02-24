@@ -74,7 +74,12 @@ app.get('/inspiration', (req, res) => {
       var flightOptions = {
         method: 'GET',
         url: 'https://test.api.amadeus.com/v1/shopping/flight-destinations',
-        qs: { origin: cityCode },
+        qs: { 
+          origin: cityCode,
+          maxPrice: req.query.maxPrice,
+          currency: 'USD',
+          viewBy: req.query.viewBy
+        },
         headers: { 
             'Postman-Token': 'a494f66e-d0b2-4824-af61-eeedd480d39e',
             'cache-control': 'no-cache',
@@ -155,8 +160,14 @@ app.get('/lowfare', (req, res) => {
           qs: { 
             origin: cityCode1,
             destination: cityCode2,
-            departureDate: req.query.departDate, 
-            returnDate: req.query.returnDate 
+            departureDate: req.query.departDate,
+            returnDate: req.query.returnDate,
+            maxPrice: req.query.maxPrice,
+            adults: req.query.adults,
+            children: req.query.children,
+            infants: req.query.infants,
+            seniors: req.query.seniors,
+            currency: 'USD'
           },
           headers: { 
             'Postman-Token': 'cb3c132d-3dea-412b-8aa2-0cbe57e059df',
@@ -168,6 +179,8 @@ app.get('/lowfare', (req, res) => {
 
         request(flightOptions, function (error, response, body) {
           if (error) res.error(error)
+          console.log(cityCode1)
+          console.log(cityCode2)
           res.json(JSON.parse(body))
         });
       });
